@@ -1,0 +1,19 @@
+# Q29: Top Hat Technique
+
+!pip install opencv-python matplotlib numpy
+
+import cv2, numpy as np, matplotlib.pyplot as plt, urllib.request
+
+url = "https://raw.githubusercontent.com/opencv/opencv/master/samples/data/smarties.png"
+urllib.request.urlretrieve(url, "q29.png")
+
+img = cv2.imread("q29.png", 0)
+_, binary = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+
+kernel = np.ones((9,9), np.uint8)
+tophat = cv2.morphologyEx(binary, cv2.MORPH_TOPHAT, kernel)
+
+plt.figure(figsize=(14,5))
+plt.subplot(1,2,1); plt.imshow(binary, cmap="gray"); plt.title("Original"); plt.axis("off")
+plt.subplot(1,2,2); plt.imshow(tophat, cmap="gray"); plt.title("Top Hat Output"); plt.axis("off")
+plt.show()
