@@ -1,0 +1,24 @@
+# Q35: Draw Rectangular Shape and Extract Object
+
+!pip install opencv-python matplotlib
+
+import cv2, matplotlib.pyplot as plt
+from google.colab import files
+
+uploaded = files.upload()
+path = list(uploaded.keys())[0]
+
+img = cv2.imread(path)
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+output = img_rgb.copy()
+
+x, y, w, h = 100, 80, 250, 200
+
+cv2.rectangle(output, (x,y), (x+w,y+h), (0,255,0), 4)
+extracted = img_rgb[y:y+h, x:x+w]
+
+plt.figure(figsize=(14,5))
+plt.subplot(1,2,1); plt.imshow(output); plt.title("Rectangle Drawn"); plt.axis("off")
+plt.subplot(1,2,2); plt.imshow(extracted); plt.title("Extracted Object"); plt.axis("off")
+plt.show()
