@@ -1,0 +1,19 @@
+# Q26: Opening Technique
+
+!pip install opencv-python matplotlib numpy
+
+import cv2, numpy as np, matplotlib.pyplot as plt, urllib.request
+
+url = "https://raw.githubusercontent.com/opencv/opencv/master/samples/data/sudoku.png"
+urllib.request.urlretrieve(url, "q26.png")
+
+img = cv2.imread("q26.png", 0)
+_, binary = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+
+kernel = np.ones((5,5), np.uint8)
+opening = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
+
+plt.figure(figsize=(14,5))
+plt.subplot(1,2,1); plt.imshow(binary, cmap="gray"); plt.title("Original"); plt.axis("off")
+plt.subplot(1,2,2); plt.imshow(opening, cmap="gray"); plt.title("Opening Output"); plt.axis("off")
+plt.show()
