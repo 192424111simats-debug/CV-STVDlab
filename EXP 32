@@ -1,0 +1,47 @@
+# Q32: Play Video in Reverse Mode
+
+!pip install opencv-python
+
+import cv2
+from google.colab import files
+from IPython.display import HTML
+from base64 import b64encode
+
+uploaded = files.upload()
+video_path = list(uploaded.keys())[0]
+
+cap = cv2.VideoCapture(video_path)
+
+frames = []
+fps = int(cap.get(cv2.CAP_PROP_FPS))
+width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+    frames.append(frame)
+
+cap.release()
+
+out = cv2.VideoWriter(
+    "reverse_video.mp4",
+    cv2.VideoWriter_fourcc(*"mp4v"),
+    fps,
+    (width, height)
+)
+
+for frame in reversed(frames):
+    out.write(frame)
+
+out.release()
+
+mp4 = open("reverse_video.mp4", "rb").read()
+data_url = "data:video/mp4;base64," + b64encode(mp4).decode()
+
+HTML(f"""
+<video width="600" controls>
+<source src="{data_url}" type="video/mp4">
+</video>
+""")
